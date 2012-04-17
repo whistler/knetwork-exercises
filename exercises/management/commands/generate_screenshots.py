@@ -7,8 +7,18 @@ from exercises.models import KhanExerciseTreeNode
 
 POST_LOAD_JS = """
     $(document).ready(function() {
-        $('header, footer, #answer_area_wrap, #warning-bar, #extras, .exercise-badge').hide();
+        $('header, footer, #answer_area_wrap, #warning-bar, #extras, .exercise-badge, .exercises-header, .exercises-stack').hide();
+        $('*').css('border', 'none');
+        $('*').css('box-shadow', 'none');
+        $('body').css('min-width', '0px');
+        $('#page-container').css('min-width', '0px');
+        $('#page-container').css('max-width', 'none');
+        $('article').css('padding', '0 0 0 0');
+        $('article').css('margin', '0 0 0 0');
+        $('.exercises-card').css('width', 'auto');
+        $('#outer-wrapper').css('height', 'auto');
         $('*').css('background', 'transparent');
+        $('.exercises-card').css('background', "url(http://khan-academy.appspot.com/images/light-page-bg.png) repeat-x");        
     });
 """
 
@@ -29,16 +39,23 @@ def _generate_screenshots():
     #from webkit2png import create_pngs
     #create_pngs(*urls, **options)
 
-    options = [
-        '--dir', settings.KHAN_EXERCISE_SCREENSHOT_DIR,
-        '--js', POST_LOAD_JS,
-        '--transparent',
-        '--fullsize',
-        '--delay', '2'
-    ]
-    for url in urls:
-        args = ['webkit2png'] + [url] + options
-        call(args)
+    for e in exercises:
+      if '#' in e.url:
+        continue
+
+      file_name = e.parent.display_name + "_" + e.display_name
+      file_name.replace(' ', '_')
+      file_name = file_name.replace(' ', '_')
+      options = [
+          '--dir', settings.KHAN_EXERCISE_SCREENSHOT_DIR,
+          '--js', POST_LOAD_JS,
+          '--transparent',
+          '--fullsize',
+          '--delay', '2',
+          '--filename', file_name
+      ]
+      args = ['webkit2png'] + [e.url] + options
+      call(args)
 
 class Command(BaseCommand):
     help = 'Generates PNG screenshots of each live exercise in the database.'

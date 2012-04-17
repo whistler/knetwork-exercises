@@ -9,6 +9,7 @@ class KhanExerciseTreeNode(MPTTModel):
 
     khan_id = models.CharField(max_length=255)
     display_name = models.CharField(max_length=255)
+    # topic = models.CharField(max_length=)
     live = models.BooleanField()
     url = models.URLField(null=True)
 

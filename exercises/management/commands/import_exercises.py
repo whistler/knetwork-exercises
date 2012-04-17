@@ -11,7 +11,7 @@ API_URL_EXERCISES = 'http://www.khanacademy.org/api/v1/exercises'
 def _import_tree(tree_dict):
     if tree_dict['kind'] == 'Topic':
         khan_id = tree_dict['id']
-        display_name = tree_dict['title']
+        display_name = tree_dict['standalone_title']
         live = True
         url = None # make None because it's not an exercise
         num_exercises = 0
@@ -30,7 +30,7 @@ def _import_tree(tree_dict):
     node.url = url
     node.save()
 
-    if tree_dict.has_key('children'):
+    if tree_dict.has_key('children'): # topic tree!
         for item in tree_dict['children']:
             child, _num_exercises = _import_tree(item)
             if _num_exercises > 0:
