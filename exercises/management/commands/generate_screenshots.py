@@ -18,7 +18,6 @@ POST_LOAD_JS = """
         $('.exercises-card').css('width', 'auto');
         $('#outer-wrapper').css('height', 'auto');
         $('*').css('background', 'transparent');
-        $('.exercises-card').css('background', "url(http://khan-academy.appspot.com/images/light-page-bg.png) repeat-x");        
     });
 """
 
